@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import sanityClient from "@sanity/client";
+import { Link } from "react-router-dom"
 const client = sanityClient({
   projectId: "jslptlpf",
   dataset: "production",
-  useCDN: true
+  useCdn: true
 });
 
 class Home extends Component {
@@ -15,6 +16,7 @@ class Home extends Component {
   }
   componentDidMount() {
     client.fetch('*[_type == "post"]').then(posts => this.setState({ posts }));
+    
   }
 
   render() {
@@ -22,9 +24,13 @@ class Home extends Component {
       <div>
         <h1>Home</h1>
         <ul>
-          {this.state.posts.map(post => (
-            <li key={post._id}>{post.title}</li>
-          ))}
+            {console.log(this.state.posts)}
+          {this.state.posts.map((post)=>{
+              let path = `/post/${post._id}`
+              return(
+                  <li key={post._id}><Link to={path}>{post.title}</Link></li>
+              )
+          })}
         </ul>
       </div>
     );
